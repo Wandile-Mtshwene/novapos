@@ -6,6 +6,13 @@ import * as authSchema from "@/lib/db/auth-schema";
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET!,
   baseURL: process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL,
+  trustedOrigins: [
+    "https://novapos.vercel.app",
+    "https://novapos-gamma.vercel.app",
+    "https://novapos-wandile-mtshwenes-projects.vercel.app",
+    "http://localhost:3000",
+    ...(process.env.NEXT_PUBLIC_APP_URL ? [process.env.NEXT_PUBLIC_APP_URL] : []),
+  ],
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: authSchema,
