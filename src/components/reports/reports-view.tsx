@@ -66,11 +66,11 @@ export function ReportsView({ summary, dailyRevenue, customerCount }: ReportsVie
   }));
 
   return (
-    <div className="p-6 space-y-8">
+    <div className="px-4 py-4 md:px-6 md:py-6 space-y-6 md:space-y-8">
       {/* Summary stats */}
       <div>
         <h2 className="text-sm font-semibold text-[var(--nova-text)] mb-3">Last 30 Days</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
           <StatCard
             label="Total Revenue"
             value={formatCurrency(summary.total_revenue)}
@@ -107,84 +107,88 @@ export function ReportsView({ summary, dailyRevenue, customerCount }: ReportsVie
         <div className="rounded-2xl border border-[var(--nova-border)] bg-[var(--nova-card)] p-5">
           <h3 className="text-sm font-semibold text-[var(--nova-text)] mb-4">Revenue Trend</h3>
           {revenueData.length === 0 ? (
-            <div className="flex items-center justify-center h-40">
+            <div className="flex items-center justify-center h-[220px] md:h-[180px]">
               <p className="text-sm text-[var(--nova-muted)]">No sales recorded yet.</p>
             </div>
           ) : (
-            <ResponsiveContainer width="100%" height={180}>
-              <AreaChart data={revenueData} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-                <defs>
-                  <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={CHART_COLORS.accent} stopOpacity={0.3} />
-                    <stop offset="95%" stopColor={CHART_COLORS.accent} stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--nova-tint-3)" />
-                <XAxis
-                  dataKey="label"
-                  tick={{ fontSize: 10, fill: "var(--nova-dim)" }}
-                  axisLine={false}
-                  tickLine={false}
-                  interval="preserveStartEnd"
-                />
-                <YAxis
-                  tick={{ fontSize: 10, fill: "var(--nova-dim)" }}
-                  axisLine={false}
-                  tickLine={false}
-                  tickFormatter={(v) => `R${v}`}
-                  width={45}
-                />
-                <Tooltip content={<CustomTooltip currency />} />
-                <Area
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke={CHART_COLORS.accent}
-                  strokeWidth={2}
-                  fill="url(#revenueGrad)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            <div className="h-[220px] md:h-[180px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={revenueData} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+                  <defs>
+                    <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={CHART_COLORS.accent} stopOpacity={0.3} />
+                      <stop offset="95%" stopColor={CHART_COLORS.accent} stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--nova-tint-3)" />
+                  <XAxis
+                    dataKey="label"
+                    tick={{ fontSize: 10, fill: "var(--nova-dim)" }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis
+                    tick={{ fontSize: 10, fill: "var(--nova-dim)" }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v) => `R${v}`}
+                    width={45}
+                  />
+                  <Tooltip content={<CustomTooltip currency />} />
+                  <Area
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke={CHART_COLORS.accent}
+                    strokeWidth={2}
+                    fill="url(#revenueGrad)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
           )}
         </div>
 
         <div className="rounded-2xl border border-[var(--nova-border)] bg-[var(--nova-card)] p-5">
           <h3 className="text-sm font-semibold text-[var(--nova-text)] mb-4">Sales by Day</h3>
           {revenueData.length === 0 ? (
-            <div className="flex items-center justify-center h-40">
+            <div className="flex items-center justify-center h-[220px] md:h-[180px]">
               <p className="text-sm text-[var(--nova-muted)]">No sales recorded yet.</p>
             </div>
           ) : (
-            <ResponsiveContainer width="100%" height={180}>
-              <BarChart data={revenueData} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--nova-tint-3)" />
-                <XAxis
-                  dataKey="label"
-                  tick={{ fontSize: 10, fill: "var(--nova-dim)" }}
-                  axisLine={false}
-                  tickLine={false}
-                  interval="preserveStartEnd"
-                />
-                <YAxis
-                  tick={{ fontSize: 10, fill: "var(--nova-dim)" }}
-                  axisLine={false}
-                  tickLine={false}
-                  width={30}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar
-                  dataKey="sales"
-                  fill={CHART_COLORS.accent}
-                  radius={[4, 4, 0, 0]}
-                  opacity={0.8}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="h-[220px] md:h-[180px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={revenueData} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--nova-tint-3)" />
+                  <XAxis
+                    dataKey="label"
+                    tick={{ fontSize: 10, fill: "var(--nova-dim)" }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis
+                    tick={{ fontSize: 10, fill: "var(--nova-dim)" }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={30}
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar
+                    dataKey="sales"
+                    fill={CHART_COLORS.accent}
+                    radius={[4, 4, 0, 0]}
+                    opacity={0.8}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           )}
         </div>
       </div>
 
       {/* Empty top lists */}
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3">
         {[
           { label: "Top Services", icon: Scissors },
           { label: "Top Staff", icon: UserCheck },

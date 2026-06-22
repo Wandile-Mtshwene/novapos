@@ -127,8 +127,8 @@ export function AppointmentDialog({
               onChange={(e) => set("service_id", e.target.value)}
               required
               className={cn(
-                "w-full rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
-                "px-3 py-2 text-sm text-[var(--nova-text)]",
+                "w-full h-10 rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
+                "px-3 text-sm text-[var(--nova-text)]",
                 "focus:outline-none focus:border-[var(--nova-accent)]",
                 "transition-colors"
               )}
@@ -142,7 +142,7 @@ export function AppointmentDialog({
             </select>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-[var(--nova-muted)] mb-1.5">
                 Customer
@@ -151,8 +151,8 @@ export function AppointmentDialog({
                 value={form.customer_id}
                 onChange={(e) => set("customer_id", e.target.value)}
                 className={cn(
-                  "w-full rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
-                  "px-3 py-2 text-sm text-[var(--nova-text)]",
+                  "w-full h-10 rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
+                  "px-3 text-sm text-[var(--nova-text)]",
                   "focus:outline-none focus:border-[var(--nova-accent)]",
                   "transition-colors"
                 )}
@@ -174,8 +174,8 @@ export function AppointmentDialog({
                 value={form.staff_id}
                 onChange={(e) => set("staff_id", e.target.value)}
                 className={cn(
-                  "w-full rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
-                  "px-3 py-2 text-sm text-[var(--nova-text)]",
+                  "w-full h-10 rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
+                  "px-3 text-sm text-[var(--nova-text)]",
                   "focus:outline-none focus:border-[var(--nova-accent)]",
                   "transition-colors"
                 )}
@@ -199,7 +199,7 @@ export function AppointmentDialog({
               value={form.starts_at}
               onChange={(e) => set("starts_at", e.target.value)}
               required
-              className="w-full"
+              className="w-full h-10"
             />
           </div>
 
@@ -221,7 +221,7 @@ export function AppointmentDialog({
             />
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="flex flex-col-reverse gap-2 md:flex-row md:justify-end">
             {isEditing && (
               <Button
                 type="button"
@@ -233,7 +233,7 @@ export function AppointmentDialog({
                 {isDeleting ? <Loader2 size={14} className="animate-spin" /> : "Delete"}
               </Button>
             )}
-            <div className="flex-1" />
+            <div className="hidden md:flex flex-1" />
             <Button
               type="button"
               variant="outline"

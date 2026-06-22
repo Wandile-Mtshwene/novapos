@@ -49,6 +49,11 @@ export default function RootLayout({
             __html: `(function(){var t=localStorage.getItem('nova-theme');document.documentElement.classList.remove('dark','light');document.documentElement.classList.add(t==='light'?'light':'dark');})();`,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `var a=localStorage.getItem('nova-accent-color');if(a){try{var c=JSON.parse(a);document.documentElement.style.setProperty('--nova-accent',c.accent);document.documentElement.style.setProperty('--nova-accent-dim',c.accentDim);}catch(e){}}`,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-[var(--nova-surface)] text-[var(--nova-text)]">
         <ThemeProvider>

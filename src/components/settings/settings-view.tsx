@@ -1,8 +1,8 @@
 "use client";
 
-import { Building2, Bell, Palette, ShieldCheck, ReceiptText, Loader2 } from "lucide-react";
+import { Building2, Bell, Palette, ShieldCheck, ReceiptText, Loader2, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,6 +18,15 @@ const TABS: { value: SettingsTab; label: string; icon: React.ComponentType<{ siz
   { value: "appearance", label: "Appearance", icon: Palette },
   { value: "notifications", label: "Notifications", icon: Bell },
   { value: "security", label: "Security", icon: ShieldCheck },
+];
+
+const ACCENT_COLORS = [
+  { label: "Purple", accent: "#8B5CF6", accentDim: "#8B5CF620" },
+  { label: "Blue", accent: "#3B82F6", accentDim: "#3B82F620" },
+  { label: "Emerald", accent: "#10B981", accentDim: "#10B98120" },
+  { label: "Rose", accent: "#F43F5E", accentDim: "#F43F5E20" },
+  { label: "Amber", accent: "#F59E0B", accentDim: "#F59E0B20" },
+  { label: "Cyan", accent: "#06B6D4", accentDim: "#06B6D420" },
 ];
 
 function FieldGroup({ label, children }: { label: string; children: React.ReactNode }) {
@@ -60,6 +69,7 @@ export function SettingsView({ organization, settings }: SettingsViewProps) {
   const [activeTab, setActiveTab] = useState<SettingsTab>("business");
   const [isSavingBiz, startBizTransition] = useTransition();
   const [isSavingReceipt, startReceiptTransition] = useTransition();
+  const [selectedAccent, setSelectedAccent] = useState<string>("#8B5CF6");
 
   const [bizForm, setBizForm] = useState({
     name: organization?.name ?? "",
@@ -73,6 +83,28 @@ export function SettingsView({ organization, settings }: SettingsViewProps) {
     tax_rate: settings?.tax_rate ?? "15",
     tip_enabled: settings?.tip_enabled ?? true,
   });
+
+  useEffect(() => {
+    const stored = localStorage.getItem("nova-accent-color");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed.accent) {
+          setSelectedAccent(parsed.accent.toUpperCase());
+          document.documentElement.style.setProperty("--nova-accent", parsed.accent);
+          document.documentElement.style.setProperty("--nova-accent-dim", parsed.accentDim);
+        }
+      } catch {
+      }
+    }
+  }, []);
+
+  function applyAccentColor(accent: string, accentDim: string) {
+    document.documentElement.style.setProperty("--nova-accent", accent);
+    document.documentElement.style.setProperty("--nova-accent-dim", accentDim);
+    localStorage.setItem("nova-accent-color", JSON.stringify({ accent, accentDim }));
+    setSelectedAccent(accent.toUpperCase());
+  }
 
   function setBiz(field: string, value: string) {
     setBizForm((f) => ({ ...f, [field]: value }));
@@ -101,35 +133,38 @@ export function SettingsView({ organization, settings }: SettingsViewProps) {
   }
 
   return (
-    <div className="flex h-full gap-0">
+    <div className="flex h-full flex-col md:flex-row gap-0">
       {/* Settings nav */}
-      <nav className="w-48 shrink-0 border-r border-[var(--nova-border)] p-3 space-y-0.5">
-        {TABS.map(({ value, label, icon: Icon }) => (
-          <button
-            key={value}
-            onClick={() => setActiveTab(value)}
-            className={cn(
-              "w-full flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-              activeTab === value
-                ? "bg-[var(--nova-accent-dim)] text-[var(--nova-accent)]"
-                : "text-[var(--nova-muted)] hover:bg-[var(--nova-tint-2)] hover:text-[var(--nova-text)]"
-            )}
-          >
-            <Icon size={15} />
-            {label}
-          </button>
-        ))}
+      <nav className="shrink-0 border-b border-[var(--nova-border)] md:border-b-0 md:border-r md:w-48 md:p-3 md:space-y-0.5">
+        <div className="flex overflow-x-auto md:flex-col gap-0.5 p-3 md:p-0">
+          {TABS.map(({ value, label, icon: Icon }) => (
+            <button
+              key={value}
+              onClick={() => setActiveTab(value)}
+              className={cn(
+                "flex shrink-0 items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap",
+                "md:w-full",
+                activeTab === value
+                  ? "bg-[var(--nova-accent-dim)] text-[var(--nova-accent)]"
+                  : "text-[var(--nova-muted)] hover:bg-[var(--nova-tint-2)] hover:text-[var(--nova-text)]"
+              )}
+            >
+              <Icon size={15} />
+              {label}
+            </button>
+          ))}
+        </div>
       </nav>
 
       {/* Settings content */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-5">
+      <div className="flex-1 overflow-y-auto px-4 py-4 md:px-6 md:py-6 space-y-5">
         {activeTab === "business" && (
           <form onSubmit={handleSaveBusiness}>
             <Section
               title="Business Information"
               description="Your business details appear on receipts and customer communications."
             >
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                 <FieldGroup label="Business Name">
                   <Input
                     value={bizForm.name}
@@ -170,7 +205,7 @@ export function SettingsView({ organization, settings }: SettingsViewProps) {
                 <Button
                   type="submit"
                   disabled={isSavingBiz}
-                  className="bg-[var(--nova-accent)] hover:bg-[var(--nova-accent)]/90 text-white"
+                  className="w-full md:w-auto bg-[var(--nova-accent)] hover:bg-[var(--nova-accent)]/90 text-white"
                 >
                   {isSavingBiz ? <Loader2 size={14} className="animate-spin" /> : "Save Changes"}
                 </Button>
@@ -232,7 +267,7 @@ export function SettingsView({ organization, settings }: SettingsViewProps) {
                 <Button
                   type="submit"
                   disabled={isSavingReceipt}
-                  className="bg-[var(--nova-accent)] hover:bg-[var(--nova-accent)]/90 text-white"
+                  className="w-full md:w-auto bg-[var(--nova-accent)] hover:bg-[var(--nova-accent)]/90 text-white"
                 >
                   {isSavingReceipt ? <Loader2 size={14} className="animate-spin" /> : "Save Changes"}
                 </Button>
@@ -243,25 +278,34 @@ export function SettingsView({ organization, settings }: SettingsViewProps) {
 
         {activeTab === "appearance" && (
           <Section title="Appearance" description="Customize the look and feel of your NovaPOS.">
-            <div className="flex items-center gap-4">
-              <p className="text-sm text-[var(--nova-muted)]">Accent Color</p>
-              <div className="flex gap-2">
-                {["#8b5cf6", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"].map((color) => (
-                  <button
-                    key={color}
-                    type="button"
-                    className="h-7 w-7 rounded-full border-2 transition-all"
-                    style={{
-                      backgroundColor: color,
-                      borderColor: color === "#8b5cf6" ? "white" : "transparent",
-                    }}
-                  />
-                ))}
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-[var(--nova-text)]">Accent Color</p>
+              <div className="flex flex-wrap gap-3">
+                {ACCENT_COLORS.map(({ label, accent, accentDim }) => {
+                  const isSelected = selectedAccent === accent.toUpperCase();
+                  return (
+                    <button
+                      key={accent}
+                      type="button"
+                      title={label}
+                      onClick={() => applyAccentColor(accent, accentDim)}
+                      className={cn(
+                        "h-9 w-9 rounded-full border-2 transition-all flex items-center justify-center",
+                        isSelected
+                          ? "border-white shadow-lg scale-110"
+                          : "border-transparent opacity-80 hover:opacity-100 hover:scale-105"
+                      )}
+                      style={{ backgroundColor: accent }}
+                    >
+                      {isSelected && <Check size={14} className="text-white" strokeWidth={3} />}
+                    </button>
+                  );
+                })}
               </div>
+              <p className="text-xs text-[var(--nova-muted)]">
+                Click a color to apply it instantly. Your choice is saved across sessions.
+              </p>
             </div>
-            <p className="text-xs text-[var(--nova-muted)]">
-              Full theme customization coming soon.
-            </p>
           </Section>
         )}
 

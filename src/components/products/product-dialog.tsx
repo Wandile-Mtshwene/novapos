@@ -108,11 +108,11 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
               onChange={(e) => set("name", e.target.value)}
               placeholder="e.g. Shampoo 250ml"
               required
-              className="w-full"
+              className="w-full h-10"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-[var(--nova-muted)] mb-1.5">
                 SKU
@@ -121,7 +121,7 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
                 value={form.sku}
                 onChange={(e) => set("sku", e.target.value)}
                 placeholder="SKU-001"
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
             <div>
@@ -132,7 +132,7 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
                 value={form.category_id}
                 onChange={(e) => set("category_id", e.target.value)}
                 className={cn(
-                  "w-full rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
+                  "w-full h-10 rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
                   "px-3 py-2 text-sm text-[var(--nova-text)]",
                   "focus:outline-none focus:border-[var(--nova-accent)] transition-colors"
                 )}
@@ -147,7 +147,7 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-[var(--nova-muted)] mb-1.5">
                 Cost Price (R)
@@ -158,7 +158,7 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
                 step="0.01"
                 value={form.cost_price}
                 onChange={(e) => set("cost_price", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
             <div>
@@ -171,7 +171,7 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
                 step="0.01"
                 value={form.selling_price}
                 onChange={(e) => set("selling_price", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
           </div>
@@ -186,7 +186,7 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
                 min="0"
                 value={form.stock_quantity}
                 onChange={(e) => set("stock_quantity", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
           )}
@@ -200,7 +200,7 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
               min="0"
               value={form.low_stock_threshold}
               onChange={(e) => set("low_stock_threshold", e.target.value)}
-              className="w-full"
+              className="w-full h-10"
             />
           </div>
 
@@ -216,7 +216,7 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
             </label>
           )}
 
-          <DialogFooter>
+          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             {isEditing && (
               <Button
                 type="button"
@@ -224,15 +224,16 @@ export function ProductDialog({ product, categories, children }: ProductDialogPr
                 size="sm"
                 onClick={handleDelete}
                 disabled={isDeleting}
+                className="w-full sm:w-auto"
               >
                 {isDeleting ? <Loader2 size={14} className="animate-spin" /> : "Delete"}
               </Button>
             )}
-            <div className="flex-1" />
-            <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
+            <div className="hidden sm:flex flex-1" />
+            <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)} className="w-full sm:w-auto">
               Cancel
             </Button>
-            <Button type="submit" size="sm" disabled={isPending}>
+            <Button type="submit" size="sm" disabled={isPending} className="w-full sm:w-auto">
               {isPending ? (
                 <Loader2 size={14} className="animate-spin" />
               ) : isEditing ? (

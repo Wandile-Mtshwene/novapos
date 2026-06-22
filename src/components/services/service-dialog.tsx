@@ -102,7 +102,7 @@ export function ServiceDialog({ service, categories, children }: ServiceDialogPr
               onChange={(e) => set("name", e.target.value)}
               placeholder="e.g. Haircut"
               required
-              className="w-full"
+              className="w-full h-10"
             />
           </div>
 
@@ -123,7 +123,7 @@ export function ServiceDialog({ service, categories, children }: ServiceDialogPr
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-[var(--nova-muted)] mb-1.5">
                 Duration (minutes)
@@ -134,7 +134,7 @@ export function ServiceDialog({ service, categories, children }: ServiceDialogPr
                 step="5"
                 value={form.duration_minutes}
                 onChange={(e) => set("duration_minutes", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
             <div>
@@ -147,7 +147,7 @@ export function ServiceDialog({ service, categories, children }: ServiceDialogPr
                 step="0.01"
                 value={form.price}
                 onChange={(e) => set("price", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
           </div>
@@ -160,7 +160,7 @@ export function ServiceDialog({ service, categories, children }: ServiceDialogPr
               value={form.category_id}
               onChange={(e) => set("category_id", e.target.value)}
               className={cn(
-                "w-full rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
+                "w-full h-10 rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)]",
                 "px-3 py-2 text-sm text-[var(--nova-text)]",
                 "focus:outline-none focus:border-[var(--nova-accent)] transition-colors"
               )}
@@ -220,19 +220,20 @@ export function ServiceDialog({ service, categories, children }: ServiceDialogPr
                 {isDeleting ? <Loader2 size={14} className="animate-spin" /> : "Delete"}
               </Button>
             )}
-            <div className="flex-1" />
-            <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" size="sm" disabled={isPending}>
-              {isPending ? (
-                <Loader2 size={14} className="animate-spin" />
-              ) : isEditing ? (
-                "Save changes"
-              ) : (
-                "Create service"
-              )}
-            </Button>
+            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:flex-1">
+              <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" size="sm" disabled={isPending}>
+                {isPending ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : isEditing ? (
+                  "Save changes"
+                ) : (
+                  "Create service"
+                )}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

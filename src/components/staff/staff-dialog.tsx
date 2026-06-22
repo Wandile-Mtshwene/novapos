@@ -99,7 +99,7 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-[var(--nova-muted)] mb-1.5">
                 First Name <span className="text-red-400">*</span>
@@ -108,7 +108,7 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
                 value={form.first_name}
                 onChange={(e) => set("first_name", e.target.value)}
                 required
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
             <div>
@@ -118,12 +118,12 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
               <Input
                 value={form.last_name}
                 onChange={(e) => set("last_name", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-[var(--nova-muted)] mb-1.5">
                 Email
@@ -132,7 +132,7 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
                 type="email"
                 value={form.email}
                 onChange={(e) => set("email", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
             <div>
@@ -143,12 +143,12 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
                 type="tel"
                 value={form.phone}
                 onChange={(e) => set("phone", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-[var(--nova-muted)] mb-1.5">
                 Role
@@ -157,7 +157,7 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
                 value={form.role}
                 onChange={(e) => set("role", e.target.value)}
                 placeholder="e.g. Stylist"
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
             <div>
@@ -171,7 +171,7 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
                 step="0.1"
                 value={form.commission_pct}
                 onChange={(e) => set("commission_pct", e.target.value)}
-                className="w-full"
+                className="w-full h-10"
               />
             </div>
           </div>
@@ -198,7 +198,7 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
                 value={form.specialtyInput}
                 onChange={(e) => set("specialtyInput", e.target.value)}
                 placeholder="Add specialty"
-                className="flex-1"
+                className="flex-1 h-10"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") { e.preventDefault(); addSpecialty(); }
                 }}
@@ -233,19 +233,20 @@ export function StaffDialog({ member, children }: StaffDialogProps) {
                 {isDeleting ? <Loader2 size={14} className="animate-spin" /> : "Delete"}
               </Button>
             )}
-            <div className="flex-1" />
-            <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" size="sm" disabled={isPending}>
-              {isPending ? (
-                <Loader2 size={14} className="animate-spin" />
-              ) : isEditing ? (
-                "Save changes"
-              ) : (
-                "Add member"
-              )}
-            </Button>
+            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:flex-1">
+              <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" size="sm" disabled={isPending}>
+                {isPending ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : isEditing ? (
+                  "Save changes"
+                ) : (
+                  "Add member"
+                )}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -108,7 +108,7 @@ export function StockAdjustDialog({ product, children }: StockAdjustDialogProps)
               value={form.quantity}
               onChange={(e) => set("quantity", e.target.value)}
               required
-              className="w-full"
+              className="w-full h-10"
             />
           </div>
 
@@ -119,7 +119,7 @@ export function StockAdjustDialog({ product, children }: StockAdjustDialogProps)
             <select
               value={form.type}
               onChange={(e) => set("type", e.target.value)}
-              className="w-full rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)] px-3 py-2 text-sm text-[var(--nova-text)] focus:outline-none focus:border-[var(--nova-accent)] transition-colors"
+              className="w-full h-10 rounded-xl border border-[var(--nova-border)] bg-[var(--nova-surface)] px-3 py-2 text-sm text-[var(--nova-text)] focus:outline-none focus:border-[var(--nova-accent)] transition-colors"
             >
               {ADJUST_TYPES.map((t) => (
                 <option key={t.value} value={t.value}>
@@ -137,15 +137,15 @@ export function StockAdjustDialog({ product, children }: StockAdjustDialogProps)
               value={form.note}
               onChange={(e) => set("note", e.target.value)}
               placeholder="Reason for adjustment"
-              className="w-full"
+              className="w-full h-10"
             />
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
+          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)} className="w-full sm:w-auto">
               Cancel
             </Button>
-            <Button type="submit" size="sm" disabled={isPending}>
+            <Button type="submit" size="sm" disabled={isPending} className="w-full sm:w-auto">
               {isPending ? <Loader2 size={14} className="animate-spin" /> : "Adjust Stock"}
             </Button>
           </DialogFooter>

@@ -65,9 +65,9 @@ export function AppointmentsView() {
   });
 
   return (
-    <div className="p-6 space-y-5">
+    <div className="px-4 py-4 md:px-6 md:py-6 space-y-5">
       {/* Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="relative">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--nova-muted)]" />
           <Input
@@ -122,39 +122,64 @@ export function AppointmentsView() {
           action={{ label: "Book First Appointment" }}
         />
       ) : (
-        <div className="rounded-xl border border-[var(--nova-border)] overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Customer</TableHead>
-                <TableHead>Service</TableHead>
-                <TableHead>Staff</TableHead>
-                <TableHead>Date & Time</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((a) => {
-                const { label, variant } = STATUS_CONFIG[a.status];
-                return (
-                  <TableRow key={a.id} className="cursor-pointer">
-                    <TableCell className="font-medium">{a.customerName}</TableCell>
-                    <TableCell>{a.serviceName}</TableCell>
-                    <TableCell>{a.staffName}</TableCell>
-                    <TableCell>{a.startsAt}</TableCell>
-                    <TableCell>{a.duration} min</TableCell>
-                    <TableCell>{a.price}</TableCell>
-                    <TableCell>
-                      <Badge variant={variant}>{label}</Badge>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
+        <>
+          {/* Mobile card list */}
+          <div className="space-y-3 md:hidden">
+            {filtered.map((a) => {
+              const { label, variant } = STATUS_CONFIG[a.status];
+              return (
+                <div key={a.id} className="rounded-xl bg-[var(--nova-card)] border border-[var(--nova-border)] p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p className="font-medium text-[var(--nova-text)] text-sm">{a.customerName}</p>
+                      <p className="text-xs text-[var(--nova-muted)] mt-0.5">{a.serviceName}</p>
+                    </div>
+                    <Badge variant={variant}>{label}</Badge>
+                  </div>
+                  <div className="mt-3 flex items-center gap-3 text-xs text-[var(--nova-muted)]">
+                    <span>{a.startsAt}</span>
+                    <span>{a.staffName}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop table */}
+          <div className="hidden md:block rounded-xl border border-[var(--nova-border)] overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Customer</TableHead>
+                  <TableHead>Service</TableHead>
+                  <TableHead>Staff</TableHead>
+                  <TableHead>Date & Time</TableHead>
+                  <TableHead>Duration</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((a) => {
+                  const { label, variant } = STATUS_CONFIG[a.status];
+                  return (
+                    <TableRow key={a.id} className="cursor-pointer">
+                      <TableCell className="font-medium">{a.customerName}</TableCell>
+                      <TableCell>{a.serviceName}</TableCell>
+                      <TableCell>{a.staffName}</TableCell>
+                      <TableCell>{a.startsAt}</TableCell>
+                      <TableCell>{a.duration} min</TableCell>
+                      <TableCell>{a.price}</TableCell>
+                      <TableCell>
+                        <Badge variant={variant}>{label}</Badge>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        </>
       )}
     </div>
   );

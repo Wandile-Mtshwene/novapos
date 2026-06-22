@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Plus, UserCheck } from "lucide-react";
+import { Search, Plus, UserCheck, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -28,7 +28,7 @@ export function StaffView({ staffMembers }: StaffViewProps) {
   });
 
   return (
-    <div className="p-6 space-y-5">
+    <div className="px-4 py-4 md:px-6 md:py-6 space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--nova-muted)]" />
@@ -58,70 +58,113 @@ export function StaffView({ staffMembers }: StaffViewProps) {
           action={{ label: "Add First Staff Member" }}
         />
       ) : (
-        <div className="rounded-xl border border-[var(--nova-border)] overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Staff Member</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Specialties</TableHead>
-                <TableHead>Commission</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead />
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((s) => {
-                const fullName = [s.first_name, s.last_name].filter(Boolean).join(" ");
-                return (
-                  <TableRow key={s.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-2.5">
-                        <Avatar className="h-7 w-7 shrink-0" size="sm">
+        <>
+          <div className="space-y-3 md:hidden pb-4">
+            {filtered.map((s) => {
+              const fullName = [s.first_name, s.last_name].filter(Boolean).join(" ");
+              return (
+                <div key={s.id} className="rounded-xl bg-[var(--nova-card)] border border-[var(--nova-border)] p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-6 w-6 shrink-0" size="sm">
                           <AvatarFallback className="bg-[var(--nova-accent-dim)] text-[var(--nova-accent)] text-xs font-semibold">
                             {getInitials(fullName, s.email?.[0])}
                           </AvatarFallback>
                         </Avatar>
-                        <div>
-                          <p className="font-medium text-[var(--nova-text)]">{fullName}</p>
-                          {s.email && (
-                            <p className="text-[11px] text-[var(--nova-muted)]">{s.email}</p>
-                          )}
-                        </div>
+                        <p className="font-medium text-sm text-[var(--nova-text)] truncate">{fullName}</p>
                       </div>
-                    </TableCell>
-                    <TableCell>{s.role}</TableCell>
-                    <TableCell>{s.phone ?? "N/A"}</TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {(s.specialties ?? []).slice(0, 2).map((sp) => (
-                          <Badge key={sp} variant="muted">{sp}</Badge>
-                        ))}
-                        {(s.specialties ?? []).length > 2 && (
-                          <Badge variant="muted">+{(s.specialties ?? []).length - 2}</Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>{s.commission_pct}%</TableCell>
-                    <TableCell>
+                      <p className="text-xs text-[var(--nova-muted)] mt-0.5 truncate">
+                        {s.email ?? "No email"}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
                       <Badge variant={s.is_active ? "success" : "muted"}>
                         {s.is_active ? "Active" : "Inactive"}
                       </Badge>
-                    </TableCell>
-                    <TableCell>
                       <StaffDialog member={s}>
-                        <Button variant="ghost" size="sm" className="text-[var(--nova-muted)] hover:text-[var(--nova-text)]">
-                          Edit
-                        </Button>
+                        <button className="p-1.5 rounded-lg hover:bg-[var(--nova-tint-1)] text-[var(--nova-muted)]">
+                          <Pencil size={14} />
+                        </button>
                       </StaffDialog>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center gap-3 flex-wrap">
+                    <Badge variant="muted">{s.role}</Badge>
+                    {s.phone && (
+                      <span className="text-xs text-[var(--nova-muted)]">{s.phone}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="hidden md:block rounded-xl border border-[var(--nova-border)] overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Staff Member</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Specialties</TableHead>
+                  <TableHead>Commission</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((s) => {
+                  const fullName = [s.first_name, s.last_name].filter(Boolean).join(" ");
+                  return (
+                    <TableRow key={s.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-2.5">
+                          <Avatar className="h-7 w-7 shrink-0" size="sm">
+                            <AvatarFallback className="bg-[var(--nova-accent-dim)] text-[var(--nova-accent)] text-xs font-semibold">
+                              {getInitials(fullName, s.email?.[0])}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium text-[var(--nova-text)]">{fullName}</p>
+                            {s.email && (
+                              <p className="text-[11px] text-[var(--nova-muted)]">{s.email}</p>
+                            )}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>{s.role}</TableCell>
+                      <TableCell>{s.phone ?? "N/A"}</TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {(s.specialties ?? []).slice(0, 2).map((sp) => (
+                            <Badge key={sp} variant="muted">{sp}</Badge>
+                          ))}
+                          {(s.specialties ?? []).length > 2 && (
+                            <Badge variant="muted">+{(s.specialties ?? []).length - 2}</Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>{s.commission_pct}%</TableCell>
+                      <TableCell>
+                        <Badge variant={s.is_active ? "success" : "muted"}>
+                          {s.is_active ? "Active" : "Inactive"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <StaffDialog member={s}>
+                          <Button variant="ghost" size="sm" className="text-[var(--nova-muted)] hover:text-[var(--nova-text)]">
+                            Edit
+                          </Button>
+                        </StaffDialog>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        </>
       )}
     </div>
   );

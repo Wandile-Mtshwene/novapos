@@ -145,11 +145,11 @@ export function CheckoutView({
   }
 
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex h-full flex-col overflow-hidden md:flex-row">
       {/* Left: item selection */}
-      <div className="flex flex-1 flex-col border-r border-[var(--nova-border)] overflow-hidden">
+      <div className="flex flex-col border-b border-[var(--nova-border)] overflow-hidden md:flex-1 md:border-b-0 md:border-r min-h-0 flex-1">
         {/* Search and tabs */}
-        <div className="p-4 border-b border-[var(--nova-border)] space-y-3">
+        <div className="p-4 border-b border-[var(--nova-border)] space-y-3 shrink-0">
           <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--nova-muted)]" />
             <Input
@@ -180,7 +180,7 @@ export function CheckoutView({
         </div>
 
         {/* Customer picker */}
-        <div className="px-4 py-3 border-b border-[var(--nova-border)] relative">
+        <div className="px-4 py-3 border-b border-[var(--nova-border)] relative shrink-0">
           <button
             onClick={() => setShowCustomerPicker((v) => !v)}
             className="flex w-full items-center gap-2 rounded-xl border border-dashed border-[var(--nova-border)] p-3 text-sm hover:border-[var(--nova-accent)]/40 hover:text-[var(--nova-accent)] transition-colors"
@@ -229,7 +229,7 @@ export function CheckoutView({
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
               {activeTab === "services"
                 ? (filteredItems as ServiceWithCategory[]).map((s) => (
                     <button
@@ -290,8 +290,8 @@ export function CheckoutView({
       </div>
 
       {/* Right: cart and payment */}
-      <div className="flex w-80 shrink-0 flex-col bg-[var(--nova-deep)]">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--nova-border)]">
+      <div className="flex shrink-0 flex-col bg-[var(--nova-deep)] md:w-80">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--nova-border)] shrink-0">
           <span className="text-sm font-semibold text-[var(--nova-text)]">Cart</span>
           {cart.length > 0 && (
             <Badge variant="muted">
@@ -300,69 +300,127 @@ export function CheckoutView({
           )}
         </div>
 
-        <div className="flex-1 overflow-y-auto">
-          {cart.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full py-12 text-center px-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--nova-tint-3)] mb-3">
-                <CreditCard size={20} className="text-[var(--nova-dim)]" />
+        <div className="overflow-y-auto flex-1 md:flex-initial" style={{ maxHeight: "calc(50vh - 8rem)" }}>
+          <div className="md:hidden" style={{ maxHeight: "inherit", overflowY: "auto" }}>
+            {cart.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-6 text-center px-4">
+                <p className="text-sm text-[var(--nova-muted)]">Cart is empty</p>
               </div>
-              <p className="text-sm text-[var(--nova-muted)]">Cart is empty</p>
-              <p className="text-xs text-[var(--nova-dim)] mt-1">
-                Select services or products from the left panel.
-              </p>
-            </div>
-          ) : (
-            <div className="p-3 space-y-2">
-              {cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded-xl border border-[var(--nova-border)] bg-[var(--nova-card)] p-3"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[var(--nova-text)] truncate">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-[var(--nova-muted)] mt-0.5">
-                        {formatCurrency(item.unitPrice)}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="ml-2 text-[var(--nova-dim)] hover:text-red-400 transition-colors"
-                    >
-                      <X size={13} />
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center gap-2">
+            ) : (
+              <div className="p-3 space-y-2">
+                {cart.map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-xl border border-[var(--nova-border)] bg-[var(--nova-card)] p-3"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-[var(--nova-text)] truncate">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-[var(--nova-muted)] mt-0.5">
+                          {formatCurrency(item.unitPrice)}
+                        </p>
+                      </div>
                       <button
-                        onClick={() => updateQty(item.id, -1)}
-                        className="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--nova-tint-3)] text-[var(--nova-muted)] hover:text-[var(--nova-text)] transition-colors"
+                        onClick={() => removeItem(item.id)}
+                        className="ml-2 text-[var(--nova-dim)] hover:text-red-400 transition-colors"
                       >
-                        <Minus size={11} />
+                        <X size={13} />
                       </button>
-                      <span className="text-sm font-semibold text-[var(--nova-text)] w-4 text-center">
-                        {item.quantity}
+                    </div>
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => updateQty(item.id, -1)}
+                          className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--nova-tint-3)] text-[var(--nova-muted)] hover:text-[var(--nova-text)] transition-colors"
+                        >
+                          <Minus size={13} />
+                        </button>
+                        <span className="text-sm font-semibold text-[var(--nova-text)] w-4 text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() => updateQty(item.id, 1)}
+                          className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--nova-tint-3)] text-[var(--nova-muted)] hover:text-[var(--nova-text)] transition-colors"
+                        >
+                          <Plus size={13} />
+                        </button>
+                      </div>
+                      <span className="text-sm font-semibold text-[var(--nova-text)]">
+                        {formatCurrency(item.unitPrice * item.quantity)}
                       </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="hidden md:block h-full overflow-y-auto">
+            {cart.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full py-12 text-center px-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--nova-tint-3)] mb-3">
+                  <CreditCard size={20} className="text-[var(--nova-dim)]" />
+                </div>
+                <p className="text-sm text-[var(--nova-muted)]">Cart is empty</p>
+                <p className="text-xs text-[var(--nova-dim)] mt-1">
+                  Select services or products from the left panel.
+                </p>
+              </div>
+            ) : (
+              <div className="p-3 space-y-2">
+                {cart.map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-xl border border-[var(--nova-border)] bg-[var(--nova-card)] p-3"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-[var(--nova-text)] truncate">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-[var(--nova-muted)] mt-0.5">
+                          {formatCurrency(item.unitPrice)}
+                        </p>
+                      </div>
                       <button
-                        onClick={() => updateQty(item.id, 1)}
-                        className="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--nova-tint-3)] text-[var(--nova-muted)] hover:text-[var(--nova-text)] transition-colors"
+                        onClick={() => removeItem(item.id)}
+                        className="ml-2 text-[var(--nova-dim)] hover:text-red-400 transition-colors"
                       >
-                        <Plus size={11} />
+                        <X size={13} />
                       </button>
                     </div>
-                    <span className="text-sm font-semibold text-[var(--nova-text)]">
-                      {formatCurrency(item.unitPrice * item.quantity)}
-                    </span>
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => updateQty(item.id, -1)}
+                          className="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--nova-tint-3)] text-[var(--nova-muted)] hover:text-[var(--nova-text)] transition-colors"
+                        >
+                          <Minus size={11} />
+                        </button>
+                        <span className="text-sm font-semibold text-[var(--nova-text)] w-4 text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() => updateQty(item.id, 1)}
+                          className="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--nova-tint-3)] text-[var(--nova-muted)] hover:text-[var(--nova-text)] transition-colors"
+                        >
+                          <Plus size={11} />
+                        </button>
+                      </div>
+                      <span className="text-sm font-semibold text-[var(--nova-text)]">
+                        {formatCurrency(item.unitPrice * item.quantity)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="border-t border-[var(--nova-border)] p-4 space-y-4">
+        <div className="border-t border-[var(--nova-border)] p-4 space-y-4 shrink-0">
           <div className="space-y-1.5 text-sm">
             <div className="flex justify-between text-[var(--nova-muted)]">
               <span>Subtotal</span>
@@ -375,7 +433,7 @@ export function CheckoutView({
             {tipEnabled && (
               <div className="flex items-center justify-between text-[var(--nova-muted)]">
                 <span>Tip</span>
-                <div className="flex gap-1">
+                <div className="flex flex-wrap gap-1">
                   {[0, 10, 15, 20].map((pct) => (
                     <button
                       key={pct}
@@ -425,7 +483,7 @@ export function CheckoutView({
           <Button
             disabled={cart.length === 0 || isPending}
             onClick={handleCharge}
-            className="w-full h-10 bg-[var(--nova-accent)] hover:bg-[var(--nova-accent)]/90 text-white font-semibold rounded-xl disabled:opacity-40"
+            className="w-full h-12 text-base bg-[var(--nova-accent)] hover:bg-[var(--nova-accent)]/90 text-white font-semibold rounded-xl disabled:opacity-40"
           >
             {isPending ? (
               <Loader2 size={16} className="animate-spin" />

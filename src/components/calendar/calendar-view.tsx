@@ -151,24 +151,24 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Calendar toolbar */}
-      <div className="flex items-center justify-between px-6 py-3 border-b border-[var(--nova-border)] shrink-0">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between px-3 py-2 md:px-6 md:py-3 border-b border-[var(--nova-border)] shrink-0 gap-2">
+        <div className="flex items-center gap-1 md:gap-2 min-w-0">
           <Button
             variant="ghost"
             size="sm"
             onClick={prev}
-            className="text-[var(--nova-muted)] hover:text-[var(--nova-text)] hover:bg-[var(--nova-tint-3)]"
+            className="text-[var(--nova-muted)] hover:text-[var(--nova-text)] hover:bg-[var(--nova-tint-3)] shrink-0"
           >
             <ChevronLeft size={16} />
           </Button>
-          <span className="text-sm font-semibold text-[var(--nova-text)] min-w-[200px] text-center">
+          <span className="text-xs md:text-sm font-semibold text-[var(--nova-text)] truncate text-center md:min-w-[200px]">
             {title}
           </span>
           <Button
             variant="ghost"
             size="sm"
             onClick={next}
-            className="text-[var(--nova-muted)] hover:text-[var(--nova-text)] hover:bg-[var(--nova-tint-3)]"
+            className="text-[var(--nova-muted)] hover:text-[var(--nova-text)] hover:bg-[var(--nova-tint-3)] shrink-0"
           >
             <ChevronRight size={16} />
           </Button>
@@ -176,20 +176,20 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
             variant="outline"
             size="sm"
             onClick={goToday}
-            className="text-xs border-[var(--nova-border)] text-[var(--nova-muted)] hover:text-[var(--nova-text)]"
+            className="text-xs border-[var(--nova-border)] text-[var(--nova-muted)] hover:text-[var(--nova-text)] shrink-0"
           >
             Today
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 md:gap-2 shrink-0">
           <div className="flex rounded-lg border border-[var(--nova-border)] overflow-hidden">
             {(["day", "week", "month"] as CalendarViewMode[]).map((v) => (
               <button
                 key={v}
                 onClick={() => setView(v)}
                 className={cn(
-                  "px-3 py-1.5 text-xs font-medium transition-colors",
+                  "text-xs px-2 py-1 md:px-3 md:py-1.5 font-medium transition-colors",
                   view === v
                     ? "bg-[var(--nova-accent-dim)] text-[var(--nova-accent)]"
                     : "text-[var(--nova-muted)] hover:text-[var(--nova-text)] hover:bg-[var(--nova-tint-2)]"
@@ -211,7 +211,7 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
               className="bg-[var(--nova-accent)] hover:bg-[var(--nova-accent)]/90 text-white gap-1.5"
             >
               <Plus size={14} />
-              New
+              <span className="hidden md:inline">New</span>
             </Button>
           </AppointmentDialog>
         </div>
@@ -219,7 +219,7 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
 
       {/* Week view */}
       {view === "week" && (
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto max-h-[calc(100dvh-200px)]">
           <div className="flex min-w-[700px]">
             {/* Time gutter */}
             <div className="w-14 shrink-0 border-r border-[var(--nova-border)]">
@@ -227,7 +227,7 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
               {HOURS.map((h) => (
                 <div
                   key={h}
-                  className="h-16 border-b border-[var(--nova-border)] flex items-start pt-1 pr-2 justify-end"
+                  className="h-12 md:h-16 border-b border-[var(--nova-border)] flex items-start pt-1 pr-2 justify-end"
                 >
                   <span className="text-[10px] text-[var(--nova-dim)]">
                     {h % 12 === 0 ? 12 : h % 12}
@@ -245,7 +245,7 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
               return (
                 <div
                   key={di}
-                  className="flex-1 border-r border-[var(--nova-border)] last:border-r-0"
+                  className="min-w-[100px] flex-1 border-r border-[var(--nova-border)] last:border-r-0"
                 >
                   {/* Day header */}
                   <div
@@ -282,7 +282,7 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
                         customers={customers}
                         defaultDate={getDefaultDateStr(date)}
                       >
-                        <div className="h-16 border-b border-[var(--nova-border)] hover:bg-[var(--nova-tint-1)] transition-colors cursor-pointer" />
+                        <div className="h-12 md:h-16 border-b border-[var(--nova-border)] hover:bg-[var(--nova-tint-1)] transition-colors cursor-pointer" />
                       </AppointmentDialog>
                     ))}
 
@@ -292,8 +292,9 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
                       const end = new Date(appt.ends_at);
                       const startHour = start.getHours() + start.getMinutes() / 60;
                       const endHour = end.getHours() + end.getMinutes() / 60;
-                      const top = Math.max(0, (startHour - 7) * 64);
-                      const height = Math.max(24, (endHour - startHour) * 64);
+                      const hourH = 48;
+                      const top = Math.max(0, (startHour - 7) * hourH);
+                      const height = Math.max(24, (endHour - startHour) * hourH);
 
                       return (
                         <div
@@ -320,13 +321,13 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
 
       {/* Day view */}
       {view === "day" && (
-        <div className="flex-1 overflow-auto">
-          <div className="flex min-w-[400px]">
+        <div className="flex-1 overflow-auto max-h-[calc(100dvh-200px)]">
+          <div className="flex min-w-[320px]">
             <div className="w-14 shrink-0 border-r border-[var(--nova-border)]">
               {HOURS.map((h) => (
                 <div
                   key={h}
-                  className="h-16 border-b border-[var(--nova-border)] flex items-start pt-1 pr-2 justify-end"
+                  className="h-12 md:h-16 border-b border-[var(--nova-border)] flex items-start pt-1 pr-2 justify-end"
                 >
                   <span className="text-[10px] text-[var(--nova-dim)]">
                     {h % 12 === 0 ? 12 : h % 12}
@@ -344,7 +345,7 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
                   customers={customers}
                   defaultDate={getDefaultDateStr(current)}
                 >
-                  <div className="h-16 border-b border-[var(--nova-border)] hover:bg-[var(--nova-tint-1)] transition-colors cursor-pointer" />
+                  <div className="h-12 md:h-16 border-b border-[var(--nova-border)] hover:bg-[var(--nova-tint-1)] transition-colors cursor-pointer" />
                 </AppointmentDialog>
               ))}
 
@@ -353,8 +354,9 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
                 const end = new Date(appt.ends_at);
                 const startHour = start.getHours() + start.getMinutes() / 60;
                 const endHour = end.getHours() + end.getMinutes() / 60;
-                const top = Math.max(0, (startHour - 7) * 64);
-                const height = Math.max(24, (endHour - startHour) * 64);
+                const hourH = 48;
+                const top = Math.max(0, (startHour - 7) * hourH);
+                const height = Math.max(24, (endHour - startHour) * hourH);
 
                 return (
                   <div
@@ -422,7 +424,7 @@ export function CalendarView({ appointments, services, staff, customers }: Calen
                 >
                   <div
                     className={cn(
-                      "min-h-[80px] rounded-xl p-2 border transition-colors cursor-pointer",
+                      "min-h-[60px] md:min-h-[80px] rounded-xl p-2 border transition-colors cursor-pointer",
                       isCurrentMonth
                         ? "border-[var(--nova-border)] hover:border-[var(--nova-accent)]/30 hover:bg-[var(--nova-tint-1)]"
                         : "border-transparent opacity-30",

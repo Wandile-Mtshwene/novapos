@@ -47,7 +47,7 @@ export function DashboardOverview({ userName }: OverviewProps) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-6 space-y-8">
+      <div className="flex-1 overflow-y-auto px-4 py-4 md:px-6 md:py-6 space-y-8">
         {/* Greeting */}
         <div>
           <h2 className="text-xl font-semibold text-[var(--nova-text)]">
@@ -59,7 +59,7 @@ export function DashboardOverview({ userName }: OverviewProps) {
         </div>
 
         {/* Stats grid */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
             label="Appointments Today"
             value="0"
@@ -93,7 +93,7 @@ export function DashboardOverview({ userName }: OverviewProps) {
         {/* Quick links */}
         <div>
           <h3 className="text-sm font-semibold text-[var(--nova-text)] mb-3">Quick Actions</h3>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
             {QUICK_LINKS.map(({ label, href, icon: Icon, desc }) => (
               <Link
                 key={href}
@@ -114,7 +114,7 @@ export function DashboardOverview({ userName }: OverviewProps) {
 
         {/* Setup checklist */}
         <div className="rounded-2xl border border-[var(--nova-border)] bg-[var(--nova-card)] p-5">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-4">
             <div>
               <h3 className="text-sm font-semibold text-[var(--nova-text)]">Get started</h3>
               <p className="text-xs text-[var(--nova-muted)] mt-0.5">
