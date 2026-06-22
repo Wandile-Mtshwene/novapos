@@ -22,8 +22,12 @@ export const metadata: Metadata = {
     "NovaPOS is a modern operating system for appointment-based and service businesses. Bookings, POS, inventory, customers, and staff in one place.",
   keywords: ["POS", "point of sale", "bookings", "appointments", "salon", "barbershop", "spa"],
   icons: {
-    icon: [{ url: "/logo-icon.png", type: "image/png" }],
-    apple: { url: "/logo-icon.png", type: "image/png" },
+    icon: [
+      { url: "/favicon.png", type: "image/png", sizes: "any" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: { url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" },
   },
 };
 

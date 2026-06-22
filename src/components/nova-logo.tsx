@@ -1,34 +1,42 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface NovaPOSLogoProps {
   size?: "sm" | "md" | "lg";
   className?: string;
+  iconOnly?: boolean;
 }
 
-const sizes = {
-  sm: { icon: "w-6 h-6 text-xs", text: "text-base" },
-  md: { icon: "w-8 h-8 text-sm", text: "text-xl" },
-  lg: { icon: "w-10 h-10 text-base", text: "text-2xl" },
+const iconSizes = {
+  sm: 24,
+  md: 32,
+  lg: 40,
 };
 
-export function NovaLogo({ size = "md", className }: NovaPOSLogoProps) {
-  const { icon, text } = sizes[size];
+const textSizes = {
+  sm: "text-base",
+  md: "text-xl",
+  lg: "text-2xl",
+};
+
+export function NovaLogo({ size = "md", className, iconOnly = false }: NovaPOSLogoProps) {
+  const px = iconSizes[size];
 
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      <div
-        className={cn(
-          "shrink-0 rounded-xl flex items-center justify-center font-bold text-white",
-          "bg-gradient-to-br from-[var(--nova-accent)] to-[var(--nova-accent-secondary)]",
-          icon
-        )}
-        aria-hidden="true"
-      >
-        P
-      </div>
-      <span className={cn("font-semibold tracking-tight text-[var(--nova-text)]", text)}>
-        Nova<span className="text-[var(--nova-accent)]">POS</span>
-      </span>
+      <Image
+        src="/logo-pos.png"
+        alt="NovaPOS"
+        width={px}
+        height={px}
+        className="shrink-0"
+        priority
+      />
+      {!iconOnly && (
+        <span className={cn("font-semibold tracking-tight text-[var(--nova-text)]", textSizes[size])}>
+          Nova<span className="text-[var(--nova-accent)]">POS</span>
+        </span>
+      )}
     </div>
   );
 }
