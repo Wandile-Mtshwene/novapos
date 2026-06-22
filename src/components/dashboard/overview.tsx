@@ -58,6 +58,41 @@ export function DashboardOverview({ userName }: OverviewProps) {
           </p>
         </div>
 
+        {/* Setup checklist */}
+        <div className="rounded-2xl border border-[var(--nova-border)] bg-[var(--nova-card)] p-5">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-4">
+            <div>
+              <h3 className="text-sm font-semibold text-[var(--nova-text)]">Get started</h3>
+              <p className="text-xs text-[var(--nova-muted)] mt-0.5">
+                Complete these steps to set up your business on NovaPOS.
+              </p>
+            </div>
+            <span className="text-xs text-[var(--nova-muted)]">0 / 4</span>
+          </div>
+          <div className="space-y-2">
+            {[
+              { label: "Add your first service", href: "/dashboard/services", icon: Scissors },
+              { label: "Add your first product", href: "/dashboard/products", icon: Package },
+              { label: "Add your staff members", href: "/dashboard/staff", icon: UserCheck },
+              { label: "Book your first appointment", href: "/dashboard/calendar", icon: CalendarDays },
+            ].map(({ label, href, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-[var(--nova-tint-2)]"
+              >
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--nova-border)]">
+                  <Icon size={13} className="text-[var(--nova-muted)]" />
+                </div>
+                <span className="text-sm text-[var(--nova-muted)]">{label}</span>
+                <div className="ml-auto">
+                  <TrendingUp size={13} className="text-[var(--nova-accent)]" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Stats grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
@@ -107,41 +142,6 @@ export function DashboardOverview({ userName }: OverviewProps) {
                   {label}
                 </div>
                 <div className="mt-1 text-xs text-[var(--nova-muted)]">{desc}</div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Setup checklist */}
-        <div className="rounded-2xl border border-[var(--nova-border)] bg-[var(--nova-card)] p-5">
-          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-4">
-            <div>
-              <h3 className="text-sm font-semibold text-[var(--nova-text)]">Get started</h3>
-              <p className="text-xs text-[var(--nova-muted)] mt-0.5">
-                Complete these steps to set up your business on NovaPOS.
-              </p>
-            </div>
-            <span className="text-xs text-[var(--nova-muted)]">0 / 4</span>
-          </div>
-          <div className="space-y-2">
-            {[
-              { label: "Add your first service", href: "/dashboard/services", icon: Scissors },
-              { label: "Add your first product", href: "/dashboard/products", icon: Package },
-              { label: "Add your staff members", href: "/dashboard/staff", icon: UserCheck },
-              { label: "Book your first appointment", href: "/dashboard/calendar", icon: CalendarDays },
-            ].map(({ label, href, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-[var(--nova-tint-2)]"
-              >
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--nova-border)]">
-                  <Icon size={13} className="text-[var(--nova-muted)]" />
-                </div>
-                <span className="text-sm text-[var(--nova-muted)]">{label}</span>
-                <div className="ml-auto">
-                  <TrendingUp size={13} className="text-[var(--nova-accent)]" />
-                </div>
               </Link>
             ))}
           </div>
