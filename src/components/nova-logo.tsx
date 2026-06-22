@@ -35,7 +35,7 @@ export function NovaLogo({ size = "md", className, iconOnly = false }: NovaPOSLo
       </span>
       {!iconOnly && (
         <span className={cn("font-semibold tracking-tight text-[var(--nova-text)]", textSizes[size])}>
-          Nova<span className="text-[var(--nova-accent)]">POS</span>
+          Nova<span className="text-[#8B5CF6]">POS</span>
         </span>
       )}
     </div>
